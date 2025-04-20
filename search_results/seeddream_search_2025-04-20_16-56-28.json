@@ -1,0 +1,50 @@
+{
+  "github": [
+    {
+      "type": "github_code",
+      "repo": "HarleyCoops/SeeDream",
+      "path": "scripts/search_seeddream.py",
+      "url": "https://github.com/HarleyCoops/SeeDream/blob/b8f34d81a9573894966f4ebf6bfd6bf1762012c3/scripts/search_seeddream.py",
+      "search_term": "SeedDream 3.0"
+    },
+    {
+      "type": "github_code",
+      "repo": "HarleyCoops/SeeDream",
+      "path": "README.md",
+      "url": "https://github.com/HarleyCoops/SeeDream/blob/b8f34d81a9573894966f4ebf6bfd6bf1762012c3/README.md",
+      "search_term": "SeedDream 3.0"
+    },
+    {
+      "type": "github_code",
+      "repo": "Charlotte-Kosche-Thesis/patreon-scraper",
+      "path": "datadump/patreon/overviews/s/StarSeedDreamer.html",
+      "url": "https://github.com/Charlotte-Kosche-Thesis/patreon-scraper/blob/9a48da2d2ee59f2f5f9e0c30be120814f1c98be5/datadump/patreon/overviews/s/StarSeedDreamer.html",
+      "search_term": "SeedDream 3.0"
+    },
+    {
+      "type": "github_code",
+      "repo": "HarleyCoops/SeeDream",
+      "path": ".github/workflows/seeddream_search.yml",
+      "url": "https://github.com/HarleyCoops/SeeDream/blob/b8f34d81a9573894966f4ebf6bfd6bf1762012c3/.github/workflows/seeddream_search.yml",
+      "search_term": "SeedDream 3.0"
+    },
+    {
+      "type": "github_code",
+      "repo": "HarleyCoops/SeeDream",
+      "path": "scripts/search_seeddream.py",
+      "url": "https://github.com/HarleyCoops/SeeDream/blob/b8f34d81a9573894966f4ebf6bfd6bf1762012c3/scripts/search_seeddream.py",
+      "search_term": "SeedDream3.0"
+    },
+    {
+      "type": "github_code",
+      "repo": "HarleyCoops/SeeDream",
+      "path": "scripts/search_seeddream.py",
+      "url": "https://github.com/HarleyCoops/SeeDream/blob/b8f34d81a9573894966f4ebf6bfd6bf1762012c3/scripts/search_seeddream.py",
+      "search_term": "SeedDream-3.0"
+    }
+  ],
+  "arxiv": [],
+  "huggingface": [],
+  "web": [],
+  "timestamp": "2025-04-20_16-56-28"
+}
