@@ -30,7 +30,7 @@ jobs:
       - name: Run SeedDream search
         id: search
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SEARCH_PAT || secrets.GITHUB_TOKEN }}
         run: |
           python scripts/search_seeddream.py
           echo "SEARCH_DATE=$(date +%Y-%m-%d)" >> $GITHUB_ENV

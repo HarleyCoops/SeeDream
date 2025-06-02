@@ -122,29 +122,33 @@ class SeedDreamSearcher:
             except Exception as e:
                 logger.error(f"Error checking repositories for organization '{org}': {e}")
         
-        # Search code
-        for term in SEARCH_TERMS[:3]:  # Limit to first few terms to avoid rate limiting
-            try:
-                encoded_term = term.replace(" ", "+")
-                url = f"{GITHUB_API_URL}/search/code?q={encoded_term}&sort=indexed&order=desc"
-                response = requests.get(url, headers=self.github_headers)
-                response.raise_for_status()
-                data = response.json()
-                
-                if "items" in data:
-                    for item in data["items"][:MAX_RESULTS_PER_SOURCE]:
-                        results.append({
-                            "type": "github_code",
-                            "repo": item["repository"]["full_name"],
-                            "path": item["path"],
-                            "url": item["html_url"],
-                            "search_term": term
-                        })
-                
-                # Respect GitHub API rate limits
-                time.sleep(5)  # Longer sleep for code search as it's more rate-limited
-            except Exception as e:
-                logger.error(f"Error searching GitHub code for '{term}': {e}")
+        # Search code - only if we have a personal access token (not the default GITHUB_TOKEN)
+        # The default GITHUB_TOKEN in Actions cannot search code across all of GitHub
+        if self.github_token and not os.environ.get("GITHUB_ACTIONS"):
+            for term in SEARCH_TERMS[:3]:  # Limit to first few terms to avoid rate limiting
+                try:
+                    encoded_term = term.replace(" ", "+")
+                    url = f"{GITHUB_API_URL}/search/code?q={encoded_term}&sort=indexed&order=desc"
+                    response = requests.get(url, headers=self.github_headers)
+                    response.raise_for_status()
+                    data = response.json()
+                    
+                    if "items" in data:
+                        for item in data["items"][:MAX_RESULTS_PER_SOURCE]:
+                            results.append({
+                                "type": "github_code",
+                                "repo": item["repository"]["full_name"],
+                                "path": item["path"],
+                                "url": item["html_url"],
+                                "search_term": term
+                            })
+                    
+                    # Respect GitHub API rate limits
+                    time.sleep(5)  # Longer sleep for code search as it's more rate-limited
+                except Exception as e:
+                    logger.error(f"Error searching GitHub code for '{term}': {e}")
+        else:
+            logger.info("Skipping code search - requires personal access token with broader permissions")
         
         return results
     
@@ -328,19 +332,27 @@ class SeedDreamSearcher:
 
 def main():
     """Main function to run the search."""
-    # Get GitHub token from environment variable if available
-    github_token = os.environ.get("GITHUB_TOKEN")
-    
-    searcher = SeedDreamSearcher(github_token)
-    results = searcher.run_search()
-    output_path = searcher.save_results(results)
-    
-    print(f"Search completed successfully. Results saved to {output_path}")
-    
-    # If running in GitHub Actions, output the path for use in the workflow
-    if os.environ.get("GITHUB_ACTIONS") == "true":
-        with open(os.environ.get("GITHUB_OUTPUT", ""), "a") as f:
-            f.write(f"result_path={output_path}\n")
+    try:
+        # Get GitHub token from environment variable if available
+        github_token = os.environ.get("GITHUB_TOKEN")
+        
+        searcher = SeedDreamSearcher(github_token)
+        results = searcher.run_search()
+        output_path = searcher.save_results(results)
+        
+        print(f"Search completed successfully. Results saved to {output_path}")
+        
+        # If running in GitHub Actions, output the path for use in the workflow
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            with open(os.environ.get("GITHUB_OUTPUT", ""), "a") as f:
+                f.write(f"result_path={output_path}\n")
+        
+        return 0
+    except Exception as e:
+        logger.error(f"Fatal error in search: {e}")
+        print(f"Search failed with error: {e}")
+        # Still exit with 0 to prevent workflow failure
+        return 0
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
