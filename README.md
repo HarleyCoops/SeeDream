@@ -13,7 +13,7 @@ This repository contains a GitHub Action that automatically searches for SeedDre
 1. GitHub repositories and code
 2. arXiv papers
 3. Hugging Face models
-4. (Future) Web search results
+4. (Future) Web search results 
 
 When new information is found, the action:
 1. Saves the search results to the `search_results` directory
